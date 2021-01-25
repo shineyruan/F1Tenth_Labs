@@ -12,9 +12,11 @@ public:
     // constructor
     LidarProcessor() : range_closest(_closest), range_farthest(_farthest) {}
 
+    // callback function for LaserScan subscriber
     void handleLaserScan(const sensor_msgs::LaserScanConstPtr& new_scan) {
         std::vector<float> ranges = new_scan->ranges;
 
+        // find the min/max range from linear search
         float range_closest = std::numeric_limits<float>::infinity();
         float range_farthest = 0.f;
         for (const float& r : ranges) {
@@ -23,8 +25,9 @@ public:
             if (r > range_farthest) range_farthest = r;
         }
 
-        _closest.data = range_closest;
-        _farthest.data = range_farthest;
+        // clip the data if it exceeds the required min/max range
+        _closest.data = (range_closest < new_scan->range_min) ? new_scan->range_min : range_closest;
+        _farthest.data = (range_farthest > new_scan->range_max) ? new_scan->range_max : range_farthest;
 
         ROS_INFO("LaserScan message received: closest %f, farthest %f", _closest.data, _farthest.data);
     }
