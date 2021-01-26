@@ -65,11 +65,13 @@ public:
     void scan_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg) {
         unsigned int N = scan_msg->ranges.size();
         for (unsigned int i = 0; i < N; ++i) {
-            // calculate TTC
             double range = scan_msg->ranges[i];
+            if (range > scan_msg->range_max || range < scan_msg->range_min) continue;
+
             double angle_to_heading = scan_msg->angle_min + i * scan_msg->angle_increment;
             double projected_speed = std::max(-1 * speed * std::cos(angle_to_heading), 0.0);
 
+            // calculate TTC
             double ttc = (projected_speed <= 0.0)
                              ? std::numeric_limits<double>::infinity()
                              : range / (projected_speed);
