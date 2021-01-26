@@ -77,7 +77,7 @@ public:
                              : range / (projected_speed);
 
             // publish drive/brake message
-            if (ttc <= 2.5 * speed / deceleration) {
+            if (ttc <= 2.5 * speed / deceleration) {  // 2.5 is a parameter (magic number) from simulation experiments
                 std_msgs::Bool msg_bool;
                 msg_bool.data = true;
 
