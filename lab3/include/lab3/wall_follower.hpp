@@ -32,26 +32,11 @@ public:
     double updateErrorLeft(const sensor_msgs::LaserScan::ConstPtr& scan_msg);
 
     /**
-     * @brief Calculates error to desired distance to right wall from laser scan message
-     * 
-     * @param scan_msg:         LiDAR LaserScan message
-     * @return double:          new estimated error
-     */
-    double updateErrorRight(const sensor_msgs::LaserScan::ConstPtr& scan_msg);
-
-    /**
      * @brief Calculates desired steering angle from PID control to left wall
      * 
      * @return double 
      */
     double updateControlLeft();
-
-    /**
-     * @brief Calculates desired steering angle from PID control to right wall
-     * 
-     * @return double 
-     */
-    double updateControlRight();
 
 private:
     ros::NodeHandle _n;
@@ -67,13 +52,6 @@ private:
     const double K_P_Left;
     const double K_D_Left;
     const double K_I_Left;
-
-    double _prevError_Right;
-    double _integral_Right;
-    double _error_Right;
-    const double K_P_Right;
-    const double K_D_Right;
-    const double K_I_Right;
 
     double _currentTime;
     double _prevTime;
