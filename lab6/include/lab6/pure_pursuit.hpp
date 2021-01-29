@@ -36,8 +36,10 @@ private:
     ros::Publisher _steerPublisher;
     ros::Publisher _pathVisualizer;
     ros::Publisher _posVisualizer;
+    ros::Publisher _goalVisualizer;
     visualization_msgs::Marker _pathMarker;
     visualization_msgs::Marker _posMarker;
+    visualization_msgs::Marker _goalMarker;
 
     Point _position;      // vehicle position
     double _orientation;  // vehicle orientation
@@ -46,6 +48,7 @@ private:
     int _currIdx;                   // idx of current waypoint
 
     double _lookahead;  // look ahead distance
+    const double K_p;
 };
 
 }  // namespace lab6
