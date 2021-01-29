@@ -12,11 +12,20 @@ PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path)
 }
 
 void PurePursuitPlanner::pose_callback(const nav_msgs::Odometry::ConstPtr& odom_msg) {
-    updatePosition(odom_msg->pose.pose.position);
+    updatePose(odom_msg->pose.pose.position, odom_msg->pose.pose.orientation);
 }
 
-void PurePursuitPlanner::updatePosition(const geometry_msgs::Point& new_pos) {
+void PurePursuitPlanner::updatePose(const geometry_msgs::Point& new_pos,
+                                    const geometry_msgs::Quaternion& new_orientation) {
     _position = new_pos;
+
+    tf2::Quaternion quat;
+    tf2::fromMsg(new_orientation, quat);
+    tf2::Matrix3x3 mat(quat);
+
+    double roll = 0, pitch = 0, yaw = 0;
+    mat.getRPY(roll, pitch, yaw);
+    _orientation = yaw;
 }
 
 #include <fast_csv_parser/csv.h>

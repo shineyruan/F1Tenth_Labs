@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  tf2_geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,7 +108,7 @@ find_package(Threads REQUIRED)
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES lab6
- CATKIN_DEPENDS ackermann_msgs nav_msgs roscpp sensor_msgs std_msgs
+ CATKIN_DEPENDS ackermann_msgs nav_msgs roscpp sensor_msgs std_msgs tf2_geometry_msgs
 #  DEPENDS system_lib
 )
 
