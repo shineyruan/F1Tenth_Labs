@@ -18,6 +18,8 @@ class PurePursuitPlanner {
 public:
     PurePursuitPlanner(const std::string& csv_path);
 
+    void initMarkers();
+
     void readWaypoints(const std::string& csv_path);
 
     void pose_callback(const nav_msgs::Odometry::ConstPtr& odom_msg);

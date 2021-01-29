@@ -13,6 +13,11 @@ PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path)
     _pathVisualizer = _n.advertise<visualization_msgs::Marker>("/static_viz", 1);
     _posVisualizer = _n.advertise<visualization_msgs::Marker>("/dynamic_viz", 1);
 
+    initMarkers();
+    readWaypoints(csv_path);
+}
+
+void PurePursuitPlanner::initMarkers() {
     _pathMarker.header.frame_id = "map";
     _pathMarker.header.stamp = ros::Time::now();
     _pathMarker.id = 0;
@@ -44,8 +49,6 @@ PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path)
     _posMarker.color.r = 1.0;
     _posMarker.color.g = 0.0;
     _posMarker.color.b = 0.0;
-
-    readWaypoints(csv_path);
 }
 
 void PurePursuitPlanner::pose_callback(const nav_msgs::Odometry::ConstPtr& odom_msg) {
