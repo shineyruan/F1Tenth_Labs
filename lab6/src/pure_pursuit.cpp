@@ -17,7 +17,7 @@ void PurePursuitPlanner::pose_callback(const nav_msgs::Odometry::ConstPtr& odom_
 
 void PurePursuitPlanner::updatePose(const geometry_msgs::Point& new_pos,
                                     const geometry_msgs::Quaternion& new_orientation) {
-    _position = new_pos;
+    _position = Point::fromMsg(new_pos);
 
     tf2::Quaternion quat;
     tf2::fromMsg(new_orientation, quat);
@@ -38,7 +38,7 @@ void PurePursuitPlanner::readWaypoints(const std::string& csv_path) {
         geometry_msgs::Point p;
         p.x = x;
         p.y = y;
-        _waypoints.push_back(p);
+        _waypoints.emplace_back(p);
     }
 
     ROS_INFO_STREAM("Read complete. Total size: " << _waypoints.size());

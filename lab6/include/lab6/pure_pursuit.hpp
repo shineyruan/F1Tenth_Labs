@@ -8,6 +8,8 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
+#include <lab6/point.hpp>
+
 namespace lab6 {
 
 class PurePursuitPlanner {
@@ -25,10 +27,10 @@ private:
     ros::Subscriber _poseSubscriber;
     ros::Publisher _steerPublisher;
 
-    geometry_msgs::Point _position;
+    Point _position;
     double _orientation;
 
-    std::vector<geometry_msgs::Point> _waypoints;
+    std::vector<Point> _waypoints;
 };
 
 }  // namespace lab6
