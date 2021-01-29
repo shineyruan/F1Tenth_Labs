@@ -4,6 +4,8 @@
 #include <geometry_msgs/Point.h>
 #include <math.h>
 
+#include <iostream>
+
 namespace lab6 {
 
 class Point {
@@ -20,6 +22,8 @@ public:
 
     static Point fromMsg(const geometry_msgs::Point& point_msg);
 };
+
+std::ostream& operator<<(std::ostream& o, const Point& p);
 
 }  // namespace lab6
 

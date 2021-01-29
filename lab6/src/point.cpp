@@ -35,4 +35,9 @@ Point Point::fromMsg(const geometry_msgs::Point& point_msg) {
     return p;
 }
 
+std::ostream& operator<<(std::ostream& o, const Point& p) {
+    o << "[" << p.x << ", " << p.y << ", " << p.z << "]";
+    return o;
+}
+
 }  // namespace lab6
