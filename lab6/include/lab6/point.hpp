@@ -18,8 +18,11 @@ public:
     Point(const geometry_msgs::Point& other);
 
     Point& operator=(const Point& other);
+    Point operator-(const Point& other) const;
     double distance(const Point& other) const;
+    double distance2(const Point& other) const;
 
+    static Point toLocalFrame2D(const Point& base, const Point& target, double orientation);
     static Point fromMsg(const geometry_msgs::Point& point_msg);
 };
 
