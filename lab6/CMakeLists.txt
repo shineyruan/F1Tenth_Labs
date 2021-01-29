@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Threads REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -150,6 +150,7 @@ add_executable(pure_pursuit src/lab6_main.cpp src/pure_pursuit.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(pure_pursuit
   ${catkin_LIBRARIES}
+  Threads::Threads
 )
 
 #############
