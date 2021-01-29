@@ -6,8 +6,8 @@ PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path)
     : _position(),
       _waypoints(),
       _currIdx(-1),
-      _lookahead(1.0),
-      K_p(0.5) {
+      _lookahead(1.5),
+      K_p(1) {
     _n = ros::NodeHandle();
     _poseSubscriber = _n.subscribe("/odom", 1, &PurePursuitPlanner::pose_callback, this);
     _steerPublisher = _n.advertise<ackermann_msgs::AckermannDriveStamped>("/nav", 1);
@@ -88,7 +88,7 @@ void PurePursuitPlanner::pose_callback(const nav_msgs::Odometry::ConstPtr& odom_
     control_msg.header.frame_id = "laser";
     control_msg.header.stamp = ros::Time::now();
     control_msg.drive.steering_angle = steering_angle;
-    control_msg.drive.speed = 2.0;
+    control_msg.drive.speed = 5.5;
 
     _steerPublisher.publish(control_msg);
     _pathVisualizer.publish(_pathMarker);
@@ -131,7 +131,10 @@ double PurePursuitPlanner::findGoal(const Point& pos) {
     double distance = pos.distance(_waypoints[_currIdx]);
     if (distance > _lookahead) return distance;
 
-    while (_currIdx < _waypoints.size() && pos.distance(_waypoints[_currIdx]) < _lookahead) ++_currIdx;
+    while (pos.distance(_waypoints[_currIdx]) < _lookahead) {
+        ++_currIdx;
+        if (_currIdx >= static_cast<int>(_waypoints.size())) _currIdx -= _waypoints.size();
+    }
 
     geometry_msgs::Point goal;
     goal.x = _waypoints[_currIdx].x;
