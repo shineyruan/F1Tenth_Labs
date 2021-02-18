@@ -12,20 +12,21 @@ class WallFollower {
 public:
     /**
      * @brief Construct a new Wall Follower object
-     * 
+     *
      */
     WallFollower();
 
     /**
      * @brief Laser scan ROS message call back function
-     * 
-     * @param scan_msg:     new laser scan message 
+     *
+     * @param scan_msg:     new laser scan message
      */
     void scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan_msg);
 
     /**
-     * @brief Calculates error to desired distance to left wall from laser scan message
-     * 
+     * @brief Calculates error to desired distance to left wall from laser scan
+     * message
+     *
      * @param scan_msg:         LiDAR LaserScan message
      * @return double:          new estimated error
      */
@@ -33,8 +34,8 @@ public:
 
     /**
      * @brief Calculates desired steering angle from PID control to left wall
-     * 
-     * @return double 
+     *
+     * @return double
      */
     double updateControlLeft();
 
@@ -59,17 +60,17 @@ private:
 
 /**
  * @brief Converts angle in radians to degree
- * 
+ *
  * @param r:        angle in radians
- * @return double 
+ * @return double
  */
 double toDegree(double r);
 
 /**
  * @brief Converts angle in degree to radians
- * 
+ *
  * @param d:        angle in degree
- * @return double 
+ * @return double
  */
 double toRadians(double d);
 

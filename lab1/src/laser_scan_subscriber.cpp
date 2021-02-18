@@ -17,7 +17,7 @@ public:
         std::vector<float> ranges = new_scan->ranges;
 
         // find the min/max range from linear search
-        float range_closest = std::numeric_limits<float>::infinity();
+        float range_closest  = std::numeric_limits<float>::infinity();
         float range_farthest = 0.f;
         for (const float& r : ranges) {
             if (std::isnan(r) || std::isinf(r)) continue;
@@ -26,10 +26,15 @@ public:
         }
 
         // clip the data if it exceeds the required min/max range
-        _closest.data = (range_closest < new_scan->range_min) ? new_scan->range_min : range_closest;
-        _farthest.data = (range_farthest > new_scan->range_max) ? new_scan->range_max : range_farthest;
+        _closest.data  = (range_closest < new_scan->range_min)
+                             ? new_scan->range_min
+                             : range_closest;
+        _farthest.data = (range_farthest > new_scan->range_max)
+                             ? new_scan->range_max
+                             : range_farthest;
 
-        ROS_INFO("LaserScan message received: closest %f, farthest %f", _closest.data, _farthest.data);
+        ROS_INFO("LaserScan message received: closest %f, farthest %f",
+                 _closest.data, _farthest.data);
     }
 
 private:
@@ -38,15 +43,19 @@ private:
 };
 
 int main(int argc, char** argv) {
-    ros::init(argc, argv, "laser_scan_subscriber", ros::init_options::AnonymousName);
+    ros::init(argc, argv, "laser_scan_subscriber",
+              ros::init_options::AnonymousName);
     ros::NodeHandle nh;
     ros::Rate loop_rate(10);
 
     LidarProcessor processor;
 
-    ros::Subscriber laserScan_subscriber = nh.subscribe("/scan", 1, &LidarProcessor::handleLaserScan, &processor);
-    ros::Publisher closestPoint_publisher = nh.advertise<std_msgs::Float64>("/closest_point", 1);
-    ros::Publisher farthestPoint_publisher = nh.advertise<std_msgs::Float64>("/farthest_point", 1);
+    ros::Subscriber laserScan_subscriber =
+        nh.subscribe("/scan", 1, &LidarProcessor::handleLaserScan, &processor);
+    ros::Publisher closestPoint_publisher =
+        nh.advertise<std_msgs::Float64>("/closest_point", 1);
+    ros::Publisher farthestPoint_publisher =
+        nh.advertise<std_msgs::Float64>("/farthest_point", 1);
 
     while (ros::ok()) {
         closestPoint_publisher.publish(processor.range_closest);
