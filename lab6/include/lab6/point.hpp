@@ -10,20 +10,21 @@ namespace lab6 {
 
 class Point {
 public:
-    double x, y, z;
+  double x, y, z;
 
-    Point();
-    Point(double in_x, double in_y, double in_z);
-    Point(const Point& other);
-    Point(const geometry_msgs::Point& other);
+  Point();
+  Point(double in_x, double in_y, double in_z);
+  Point(const Point& other);
+  Point(const geometry_msgs::Point& other);
 
-    Point& operator=(const Point& other);
-    Point operator-(const Point& other) const;
-    double distance(const Point& other) const;
-    double distance2(const Point& other) const;
+  Point& operator=(const Point& other);
+  Point operator-(const Point& other) const;
+  double distance(const Point& other) const;
+  double distance2(const Point& other) const;
 
-    static Point toLocalFrame2D(const Point& base, const Point& target, double orientation);
-    static Point fromMsg(const geometry_msgs::Point& point_msg);
+  static Point toLocalFrame2D(const Point& base, const Point& target,
+                              double orientation);
+  static Point fromMsg(const geometry_msgs::Point& point_msg);
 };
 
 std::ostream& operator<<(std::ostream& o, const Point& p);

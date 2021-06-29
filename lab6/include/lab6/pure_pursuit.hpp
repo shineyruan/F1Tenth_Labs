@@ -16,39 +16,40 @@ namespace lab6 {
 
 class PurePursuitPlanner {
 public:
-    PurePursuitPlanner(const std::string& csv_path);
+  PurePursuitPlanner(const std::string& csv_path);
 
-    void initMarkers();
+  void initMarkers();
 
-    void readWaypoints(const std::string& csv_path);
+  void readWaypoints(const std::string& csv_path);
 
-    void pose_callback(const nav_msgs::Odometry::ConstPtr& odom_msg);
+  void pose_callback(const nav_msgs::Odometry::ConstPtr& odom_msg);
 
-    void updatePose(const geometry_msgs::Point& new_pos, const geometry_msgs::Quaternion& new_orientation);
+  void updatePose(const geometry_msgs::Point& new_pos,
+                  const geometry_msgs::Quaternion& new_orientation);
 
-    double findWaypoint(const Point& pos);
+  double findWaypoint(const Point& pos);
 
-    double findGoal(const Point& pos);
+  double findGoal(const Point& pos);
 
 private:
-    ros::NodeHandle _n;
-    ros::Subscriber _poseSubscriber;
-    ros::Publisher _steerPublisher;
-    ros::Publisher _pathVisualizer;
-    ros::Publisher _posVisualizer;
-    ros::Publisher _goalVisualizer;
-    visualization_msgs::Marker _pathMarker;
-    visualization_msgs::Marker _posMarker;
-    visualization_msgs::Marker _goalMarker;
+  ros::NodeHandle _n;
+  ros::Subscriber _poseSubscriber;
+  ros::Publisher _steerPublisher;
+  ros::Publisher _pathVisualizer;
+  ros::Publisher _posVisualizer;
+  ros::Publisher _goalVisualizer;
+  visualization_msgs::Marker _pathMarker;
+  visualization_msgs::Marker _posMarker;
+  visualization_msgs::Marker _goalMarker;
 
-    Point _position;      // vehicle position
-    double _orientation;  // vehicle orientation
+  Point _position;      // vehicle position
+  double _orientation;  // vehicle orientation
 
-    std::vector<Point> _waypoints;  // array of all waypoints
-    int _currIdx;                   // idx of current waypoint
+  std::vector<Point> _waypoints;  // array of all waypoints
+  int _currIdx;                   // idx of current waypoint
 
-    double _lookahead;  // look ahead distance
-    const double K_p;
+  double _lookahead;  // look ahead distance
+  const double K_p;
 };
 
 }  // namespace lab6
