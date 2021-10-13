@@ -1,6 +1,6 @@
 image: levine_2.pgm
 resolution: 0.050000
-origin: [-1.050000, -2.100000, 0.000000]
+origin: [-20.518040, -20.697351, 0.000000]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196
