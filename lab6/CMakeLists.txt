@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.0.2)
 project(lab6)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++17 -Wall)
+set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-Wall)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -11,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   ackermann_msgs
   nav_msgs
   roscpp
+  roslib
   sensor_msgs
   std_msgs
   tf2_geometry_msgs
@@ -19,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 find_package(Threads REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -122,6 +125,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -153,6 +157,7 @@ add_executable(pure_pursuit src/lab6_main.cpp src/pure_pursuit.cpp src/point.cpp
 target_link_libraries(pure_pursuit
   ${catkin_LIBRARIES}
   Threads::Threads
+  ${Boost_LIBRARIES}
 )
 
 #############
