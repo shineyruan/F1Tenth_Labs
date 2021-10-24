@@ -17,6 +17,23 @@ PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path)
   readWaypoints(csv_path);
 }
 
+PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path,
+                                       const std::string& pose_topic,
+                                       const std::string& nav_topic)
+    : _position(), _waypoints(), _currIdx(-1), _lookahead(1.5), K_p(1) {
+  _n = ros::NodeHandle();
+  _poseSubscriber =
+      _n.subscribe(pose_topic, 1, &PurePursuitPlanner::pose_callback, this);
+  _steerPublisher =
+      _n.advertise<ackermann_msgs::AckermannDriveStamped>(nav_topic, 1);
+  _pathVisualizer = _n.advertise<visualization_msgs::Marker>("/static_viz", 1);
+  _posVisualizer  = _n.advertise<visualization_msgs::Marker>("/dynamic_viz", 1);
+  _goalVisualizer = _n.advertise<visualization_msgs::Marker>("/env_viz", 1);
+
+  initMarkers();
+  readWaypoints(csv_path);
+}
+
 void PurePursuitPlanner::initMarkers() {
   _pathMarker.header.frame_id    = "map";
   _pathMarker.header.stamp       = ros::Time::now();

@@ -142,6 +142,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(pure_pursuit src/lab6_main.cpp src/pure_pursuit.cpp src/point.cpp)
+add_executable(pure_pursuit_real src/lab6_real.cpp src/pure_pursuit.cpp src/point.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -155,6 +156,11 @@ add_executable(pure_pursuit src/lab6_main.cpp src/pure_pursuit.cpp src/point.cpp
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(pure_pursuit
+  ${catkin_LIBRARIES}
+  Threads::Threads
+  ${Boost_LIBRARIES}
+)
+target_link_libraries(pure_pursuit_real
   ${catkin_LIBRARIES}
   Threads::Threads
   ${Boost_LIBRARIES}
@@ -176,7 +182,7 @@ target_link_libraries(pure_pursuit
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS pure_pursuit
+install(TARGETS pure_pursuit pure_pursuit_real
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
