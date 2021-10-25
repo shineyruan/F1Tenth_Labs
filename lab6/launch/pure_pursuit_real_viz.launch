@@ -1,8 +1,8 @@
 <launch>
   <include file="$(find lab6)/launch/pure_pursuit_real.launch" />
   <node name="rviz"
-        pkg="rviz"
-        type="rviz"
-        required="true"
-        args="-d $(find lab6)/rviz/pure_pursuit_pf.rviz" />
+    pkg="rviz"
+    type="rviz"
+    required="true"
+    args="-d $(find lab6)/rviz/pure_pursuit_pf.rviz" />
 </launch>

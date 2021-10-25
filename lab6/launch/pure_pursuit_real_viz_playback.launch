@@ -1,14 +1,14 @@
 <launch>
   <node name="rviz"
-        pkg="rviz"
-        type="rviz"
-        required="true"
-        args="-d $(find lab6)/rviz/pure_pursuit_pf.rviz" />
+    pkg="rviz"
+    type="rviz"
+    required="true"
+    args="-d $(find lab6)/rviz/pure_pursuit_pf.rviz" />
 
   <node name="playbag"
-        pkg="rosbag"
-        type="play"
-        args="--clock $(arg bag_filename) --rate $(arg rate)">
+    pkg="rosbag"
+    type="play"
+    args="--clock $(arg bag_filename) --rate $(arg rate)">
   </node>
 </launch>
 
