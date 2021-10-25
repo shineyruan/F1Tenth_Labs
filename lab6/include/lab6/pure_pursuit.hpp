@@ -16,6 +16,7 @@ namespace lab6 {
 
 class PurePursuitPlanner {
 public:
+  PurePursuitPlanner();
   PurePursuitPlanner(const std::string& csv_path);
   PurePursuitPlanner(const std::string& csv_path, const std::string& pose_topic,
                      const std::string& nav_topic);
@@ -50,8 +51,19 @@ private:
   std::vector<Point> _waypoints;  // array of all waypoints
   int _currIdx;                   // idx of current waypoint
 
+  std::string _pose_topic;
+  std::string _nav_topic;
+  std::string _nav_msg_frame_id;
+  std::string _path_viz_topic;
+  std::string _path_viz_frame_id;
+  std::string _pose_viz_topic;
+  std::string _pose_viz_frame_id;
+  std::string _goal_viz_topic;
+  std::string _goal_viz_frame_id;
+
   double _lookahead;  // look ahead distance
-  const double K_p;
+  double K_p;         // proportional coefficient for steering control
+  double _speed;
 };
 
 }  // namespace lab6

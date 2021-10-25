@@ -1,41 +1,48 @@
+#include <fast_csv_parser/csv.h>
+#include <ros/package.h>
+
+#include <boost/filesystem.hpp>
 #include <lab6/pure_pursuit.hpp>
+
+namespace fs = boost::filesystem;
 
 namespace lab6 {
 
-PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path)
-    : _position(), _waypoints(), _currIdx(-1), _lookahead(1.5), K_p(1) {
+PurePursuitPlanner::PurePursuitPlanner()
+    : _position(), _waypoints(), _currIdx(-1) {
   _n = ros::NodeHandle();
-  _poseSubscriber =
-      _n.subscribe("/odom", 1, &PurePursuitPlanner::pose_callback, this);
-  _steerPublisher =
-      _n.advertise<ackermann_msgs::AckermannDriveStamped>("/nav", 1);
-  _pathVisualizer = _n.advertise<visualization_msgs::Marker>("/static_viz", 1);
-  _posVisualizer  = _n.advertise<visualization_msgs::Marker>("/dynamic_viz", 1);
-  _goalVisualizer = _n.advertise<visualization_msgs::Marker>("/env_viz", 1);
 
-  initMarkers();
-  readWaypoints(csv_path);
-}
+  std::string csv_path;
+  _n.getParam("csv_waypoint_path", csv_path);
+  _n.getParam("pose_topic", _pose_topic);
+  _n.getParam("nav_topic", _nav_topic);
+  _n.getParam("nav_msg_frame_id", _nav_msg_frame_id);
+  _n.getParam("path_visualize_topic", _path_viz_topic);
+  _n.getParam("pose_visualize_topic", _pose_viz_topic);
+  _n.getParam("goal_visualize_topic", _goal_viz_topic);
+  _n.getParam("path_visualize_frame_id", _path_viz_frame_id);
+  _n.getParam("pose_visualize_frame_id", _pose_viz_frame_id);
+  _n.getParam("goal_visualize_frame_id", _goal_viz_frame_id);
+  _n.getParam("nav_msg_speed", _speed);
+  _n.getParam("lookahead_distance", _lookahead);
+  _n.getParam("steering_Kp", K_p);
 
-PurePursuitPlanner::PurePursuitPlanner(const std::string& csv_path,
-                                       const std::string& pose_topic,
-                                       const std::string& nav_topic)
-    : _position(), _waypoints(), _currIdx(-1), _lookahead(1.5), K_p(1) {
-  _n = ros::NodeHandle();
   _poseSubscriber =
-      _n.subscribe(pose_topic, 1, &PurePursuitPlanner::pose_callback, this);
+      _n.subscribe(_pose_topic, 1, &PurePursuitPlanner::pose_callback, this);
   _steerPublisher =
-      _n.advertise<ackermann_msgs::AckermannDriveStamped>(nav_topic, 1);
-  _pathVisualizer = _n.advertise<visualization_msgs::Marker>("/static_viz", 1);
-  _posVisualizer  = _n.advertise<visualization_msgs::Marker>("/dynamic_viz", 1);
-  _goalVisualizer = _n.advertise<visualization_msgs::Marker>("/env_viz", 1);
+      _n.advertise<ackermann_msgs::AckermannDriveStamped>(_nav_topic, 1);
+  _pathVisualizer =
+      _n.advertise<visualization_msgs::Marker>(_path_viz_topic, 1);
+  _posVisualizer = _n.advertise<visualization_msgs::Marker>(_pose_viz_topic, 1);
+  _goalVisualizer =
+      _n.advertise<visualization_msgs::Marker>(_goal_viz_topic, 1);
 
   initMarkers();
   readWaypoints(csv_path);
 }
 
 void PurePursuitPlanner::initMarkers() {
-  _pathMarker.header.frame_id    = "map";
+  _pathMarker.header.frame_id    = _path_viz_frame_id;
   _pathMarker.header.stamp       = ros::Time::now();
   _pathMarker.id                 = 0;
   _pathMarker.type               = visualization_msgs::Marker::POINTS;
@@ -51,7 +58,7 @@ void PurePursuitPlanner::initMarkers() {
   _pathMarker.color.g            = 1.0;
   _pathMarker.color.b            = 0.0;
 
-  _posMarker.header.frame_id    = "map";
+  _posMarker.header.frame_id    = _pose_viz_frame_id;
   _posMarker.header.stamp       = ros::Time::now();
   _posMarker.id                 = 1;
   _posMarker.type               = visualization_msgs::Marker::POINTS;
@@ -67,7 +74,7 @@ void PurePursuitPlanner::initMarkers() {
   _posMarker.color.g            = 0.0;
   _posMarker.color.b            = 1.0;
 
-  _goalMarker.header.frame_id    = "map";
+  _goalMarker.header.frame_id    = _goal_viz_frame_id;
   _goalMarker.header.stamp       = ros::Time::now();
   _goalMarker.id                 = 2;
   _goalMarker.type               = visualization_msgs::Marker::POINTS;
@@ -101,13 +108,13 @@ void PurePursuitPlanner::pose_callback(
   ROS_INFO_STREAM(_currIdx << " " << _position.y << " "
                            << _waypoints[_currIdx].y << " " << curvature);
 
-  ackermann_msgs::AckermannDriveStamped control_msg;
-  control_msg.header.frame_id      = "laser";
-  control_msg.header.stamp         = ros::Time::now();
-  control_msg.drive.steering_angle = steering_angle;
-  control_msg.drive.speed          = 5.5;
+  ackermann_msgs::AckermannDriveStamped nav_msg;
+  nav_msg.header.frame_id      = _nav_msg_frame_id;
+  nav_msg.header.stamp         = ros::Time::now();
+  nav_msg.drive.steering_angle = steering_angle;
+  nav_msg.drive.speed          = _speed;
 
-  _steerPublisher.publish(control_msg);
+  _steerPublisher.publish(nav_msg);
   _pathVisualizer.publish(_pathMarker);
   _posVisualizer.publish(_posMarker);
   _goalVisualizer.publish(_goalMarker);
@@ -167,12 +174,13 @@ double PurePursuitPlanner::findGoal(const Point& pos) {
   return pos.distance(_waypoints[_currIdx]);
 }
 
-#include <fast_csv_parser/csv.h>
 void PurePursuitPlanner::readWaypoints(const std::string& csv_path) {
+  fs::path package_path     = ros::package::getPath("lab6");
+  std::string full_csv_path = (package_path / csv_path).string();
   ROS_INFO_STREAM("Reading waypoints from CSV...");
-  ROS_INFO_STREAM("File path: " << csv_path);
+  ROS_INFO_STREAM("File path: " << full_csv_path);
 
-  io::CSVReader<4> file_in(csv_path);
+  io::CSVReader<4> file_in(full_csv_path);
   double x = 0.0, y = 0.0, orientation = 0.0, speed = 0.0;
   while (file_in.read_row(x, y, orientation, speed)) {
     geometry_msgs::Point p;
