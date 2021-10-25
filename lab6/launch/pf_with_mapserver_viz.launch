@@ -1,0 +1,11 @@
+<launch>
+  <include file="$(find lab6)/launch/map_server.launch"/>
+
+  <include file="$(find particle_filter)/launch/localize_nomapserver.launch"/>
+
+  <node name="rviz"
+        pkg="rviz"
+        type="rviz"
+        required="true"
+        args="-d $(find lab6)/rviz/pf.rviz" />
+</launch>
