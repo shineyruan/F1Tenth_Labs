@@ -17,9 +17,6 @@ namespace lab6 {
 class PurePursuitPlanner {
 public:
   PurePursuitPlanner();
-  PurePursuitPlanner(const std::string& csv_path);
-  PurePursuitPlanner(const std::string& csv_path, const std::string& pose_topic,
-                     const std::string& nav_topic);
 
   void initMarkers();
 
