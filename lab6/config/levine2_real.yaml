@@ -1,4 +1,4 @@
-csv_waypoint_path: csv/levine_real.csv
+csv_waypoint_path: csv/levine2_floorplan.csv
 
 pose_topic: /pf/pose/odom
 nav_topic: /vesc/high_level/ackermann_cmd_mux/input/nav_1
@@ -11,7 +11,7 @@ goal_visualize_topic: /env_viz
 goal_visualize_frame_id: map
 
 nav_msg_frame_id: laser
-nav_msg_speed: 1.0
-lookahead_distance: 1.5
-steering_Kp: 1.0
+nav_msg_speed: 2.0
+lookahead_distance: 1.75
+steering_Kp: 0.65
 
