@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
   cv_bridge
   image_transport
+  particle_filter
 )
 
 ## System dependencies are found with CMake's conventions
@@ -115,7 +116,7 @@ find_package(OpenCV 4.2 REQUIRED)
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES lab6
- CATKIN_DEPENDS ackermann_msgs nav_msgs roscpp sensor_msgs std_msgs tf2_geometry_msgs visualization_msgs cv_bridge image_transport
+ CATKIN_DEPENDS ackermann_msgs nav_msgs roscpp sensor_msgs std_msgs tf2_geometry_msgs visualization_msgs cv_bridge image_transport particle_filter
 #  DEPENDS system_lib
 )
 
