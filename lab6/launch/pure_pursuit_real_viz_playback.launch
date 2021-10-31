@@ -1,4 +1,9 @@
 <launch>
+  <node name="video_visualizer"
+    pkg="lab6"
+    type="video_visualizer"
+    output="screen"/>
+
   <node name="rviz"
     pkg="rviz"
     type="rviz"
