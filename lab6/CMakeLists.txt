@@ -17,11 +17,14 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2_geometry_msgs
   visualization_msgs
+  cv_bridge
+  image_transport
 )
 
 ## System dependencies are found with CMake's conventions
 find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
+find_package(OpenCV 4.2 REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -112,7 +115,7 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES lab6
- CATKIN_DEPENDS ackermann_msgs nav_msgs roscpp sensor_msgs std_msgs tf2_geometry_msgs visualization_msgs
+ CATKIN_DEPENDS ackermann_msgs nav_msgs roscpp sensor_msgs std_msgs tf2_geometry_msgs visualization_msgs cv_bridge image_transport
 #  DEPENDS system_lib
 )
 
@@ -126,6 +129,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -142,6 +146,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(pure_pursuit src/lab6_main.cpp src/pure_pursuit.cpp src/point.cpp)
+add_executable(video_visualizer src/video_visualizer_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,6 +163,10 @@ target_link_libraries(pure_pursuit
   ${catkin_LIBRARIES}
   Threads::Threads
   ${Boost_LIBRARIES}
+)
+target_link_libraries(video_visualizer
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 #############
@@ -176,7 +185,7 @@ target_link_libraries(pure_pursuit
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS pure_pursuit
+install(TARGETS pure_pursuit video_visualizer
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
