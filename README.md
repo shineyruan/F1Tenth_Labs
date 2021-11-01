@@ -17,7 +17,7 @@ catkin_init_workspace
 cd ..
 ```
 
-1. Clone this repo, [particle filter](https://github.com/shineyruan/particle_filter) and [F1Tenth Simulator](https://github.com/f1tenth/f1tenth_simulator) into the src folder of the new Catkin workspace.
+2. Clone this repo, [particle filter](https://github.com/shineyruan/particle_filter) and [F1Tenth Simulator](https://github.com/f1tenth/f1tenth_simulator) into the src folder of the new Catkin workspace.
 
 ```bash
 cd src
