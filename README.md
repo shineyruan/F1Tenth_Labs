@@ -34,7 +34,7 @@ cd ..
 catkin_make_isolated --install
 ```
 
-5. Run one lab at a time.
+5. Run one lab at a time. For Lab 3, 4, 6, you have to hit `n` in the f1tenth_simulator console to enter autonomous navigation mode.
 
 **Note: Please checkout lab6/launch for running lab 6 codes!**
 
