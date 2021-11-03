@@ -1,0 +1,9 @@
+<launch>
+  <rosparam command="load"
+    file="$(find lab6)/config/levine2_sim.yaml" />
+
+  <node pkg="lab6"
+    name="lab6"
+    type="pure_pursuit"
+    output="screen"/>
+</launch>

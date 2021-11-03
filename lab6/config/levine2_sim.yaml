@@ -1,0 +1,16 @@
+csv_waypoint_path: csv/levine.csv
+
+pose_topic: /odom
+nav_topic: /nav
+
+path_visualize_topic: /static_viz
+path_visualize_frame_id: map
+pose_visualize_topic: /dynamic_viz
+pose_visualize_frame_id: map
+goal_visualize_topic: /env_viz
+goal_visualize_frame_id: map
+
+nav_msg_frame_id: laser
+nav_msg_speed: 2.0
+lookahead_distance: 1.75
+steering_Kp: 0.65
