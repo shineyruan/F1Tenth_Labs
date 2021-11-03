@@ -21,7 +21,7 @@ cd ..
 
 ```bash
 cd src
-git clone https://github.com/shineyruan/F1Tenth_Labs.git
+git clone https://github.com/shineyruan/F1Tenth_Labs.git --recursive
 git clone https://github.com/shineyruan/particle_filter.git
 git clone https://github.com/f1tenth/f1tenth_simulator.git
 cd ..
